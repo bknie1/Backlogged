@@ -1,0 +1,31 @@
+<%- include("../partials/header") %>
+
+	<div class="container">
+		<header class="jumbotron">
+			<h1 class="display-4">Games</h1>
+			<p class="lead">
+				Browse games in our database.
+			</p>
+			<hr class="my-4">
+			<a class="btn btn-primary btn-lg" href="/games/new">Add New Game</a>
+		</header>
+		<div class="row">
+			<% ViewModel.forEach((g) => { %>
+			<div class="col-sm-6 col-md-4">
+				<div class="thumbnail text-center m-3">
+					<img src="<%= g.image %>" class="game-art img-fluid" alt="Game Art">
+					<div class="caption">
+						<h5>
+							<%= g.title %> (<%= g.system %>)
+						</h5>
+					</div>
+					<a class="btn btn-secondary" href="/games/<%= g._id %>">
+						Details
+					</a>
+				</div>
+			</div>
+				<% }); %>
+		</div>
+	</div>
+
+	<%- include("../partials/footer") %>
