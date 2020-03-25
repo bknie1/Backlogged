@@ -4,6 +4,7 @@ const router = express.Router({mergeParams: true});
 const Game = require("../models/game");
 const Comment = require("../models/comment");
 
+// /games/:_id/comments/new/
 router.get("/new",isLoggedIn, (req, res) => {
 	Game.findById(req.params.id, (err, game) => {
 		if(err) { console.log(`Error: ${err}`)}
@@ -13,6 +14,7 @@ router.get("/new",isLoggedIn, (req, res) => {
 	});
 });
 
+// /games/:_id/comments/
 router.post("/", isLoggedIn, (req, res) => {
 	let author = req.body.authorInput;
 	let text = req.body.textInput;
