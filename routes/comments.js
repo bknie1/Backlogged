@@ -1,10 +1,11 @@
 const express = require("express");
-const router = express.Router();
+const router = express.Router({mergeParams: true});
+// Note: We allow merging of game and comment params.
 const Game = require("../models/game");
 const Comment = require("../models/comment");
 
 router.get("/new",isLoggedIn, (req, res) => {
-	Game.findById(req.params._id, (err, game) => {
+	Game.findById(req.params.id, (err, game) => {
 		if(err) { console.log(`Error: ${err}`)}
 		else {
 			res.render("comments/new", {ViewModel: game });

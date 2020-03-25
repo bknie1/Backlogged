@@ -13,7 +13,9 @@
 			<% ViewModel.forEach((g) => { %>
 			<div class="col-sm-6 col-md-4">
 				<div class="thumbnail text-center m-3">
-					<img src="<%= g.image %>" class="game-art img-fluid" alt="Game Art">
+					<a href="/games/<%= g._id %>">
+						<img src="<%= g.image %>" class="game-art img-fluid" alt="Game Art">
+					</a>
 					<div class="caption my-1">
 						<h5>
 							<%= g.title %>
@@ -22,9 +24,6 @@
 							<%= g.system %>
 						</h6>
 					</div>
-					<a class="btn btn-secondary" href="/games/<%= g._id %>">
-						Details
-					</a>
 				</div>
 			</div>
 				<% }); %>
