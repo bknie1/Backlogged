@@ -1,13 +1,24 @@
-<div class="w-50 mx-auto">
-	<form method="POST" action="/games" class="text-center">
+<div class="container my-3">
+	<form method="POST" action="/games">
 		<div class="row add-game">
-			<div class="col">
+			<div class="col col-sm-12 col-md-6 my-3">
+				<h3>
+					Add Game
+				</h3>
 				<input class="form-control my-3" type="text" name="titleInput" placeholder="Title" required>
 				<input class="form-control my-3" type="text" name="systemInput" placeholder="System" required>
 				<input class="form-control my-3" type="text" name="imageUrlInput" placeholder="Cover Art URL">
-				<button class="btn btn-primary btn-block">
+				<button class="btn btn-primary btn-md">
 					Add Game
 				</button>
+			</div>
+			<div class="col col-sm-12 col-md-6 my-3">
+				<h3>
+					Note
+				</h3>
+				<p>
+					Cover art is optional and can be added later.
+				</p>
 			</div>
 		</div>
 	</form>
