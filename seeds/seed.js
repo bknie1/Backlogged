@@ -75,8 +75,8 @@ function seedDB() {
 	
 	const users = [
 		{
-			username: "bknie1",
-			email: "bknie1@fakemail.com"
+			username: "test",
+			email: "test@test.com"
 		}
 	];
 	

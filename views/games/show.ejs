@@ -1,42 +1,46 @@
 <%- include("../partials/header") %>
 
-<div class="container">
-	<div class="row">
-		<div class="col-sm-12 col-md-8">
-			<h3>
-				<%= ViewModel.title %>
-			</h3>
-			<h4>
-				(<%= ViewModel.system %>)
-			</h4>
-			<h5>
-				<% ViewModel.tags.forEach((t) => { %>
-					<%= t.name + " " %>
-				<% }) %>
-			</h5>
-			<p>
-				<%= ViewModel.description %>
-			</p>
+	<div class="container my-5">
+		<div class="row">
+			<div class="col-sm-12 col-md-8 order-sm-last order-md-first">
+				<h3>
+					<%= ViewModel.title %>
+				</h3>
+				<h5>
+					<%= ViewModel.system %>
+				</h5>
+				<h6>
+					<% ViewModel.tags.forEach((t) => { %>
+						<%= t.name + " " %>
+							<% }) %>
+				</h6>
+				<p>
+					<%= ViewModel.description %>
+				</p>
+			</div>
+			<div class="col-sm-12 col-md-4 order-sm-first order-md-last text-md-right">
+				<img src="<%= ViewModel.image %>" class="game-art img-fluid" alt="Game Art">
+			</div>
 		</div>
-		<div class="col-sm-12 col-md-4">
-			<img src="<%= ViewModel.image %>" class="game-art img-fluid" alt="Game Art">
-		</div>
-	</div>
-	<div class="row my-3 mx-1">
-		<!-- <a href="/games/<%= ViewModel._id %>/comments/new" class="btn btn-primary btn-lg">Add Comment</a> -->
-		<%- include("../partials/comments/new") %>
-	</div>
-	
-<% ViewModel.comments.reverse().forEach((c) => { %>
-	<div class="row my-3">
-		<div class="col">
-			<blockquote class="blockquote">
-			  <p class="mb-0"><%= c.text %></p>
-			  <footer class="blockquote-footer"><%= c.author %></footer>
-			</blockquote>
-		</div>
-	</div>
-<% }); %>
-</div>
 
-<%- include("../partials/footer") %>
+		<div class="my-5">
+			<div class="text-right">
+				<a href="/games/<%= ViewModel._id %>/comments/new" class="btn btn-primary btn-md">Add a Comment</a>
+			</div>
+			<% ViewModel.comments.reverse().forEach((c) => { %>
+				<div class="card my-3">
+					<div class="card-header">
+						<%= c.author %>
+					</div>
+					<div class="card-body">
+						<small>
+							<%= c.text %>
+						</small>
+					</div>
+				</div>
+			<% }); %>
+		</div>
+
+	</div>
+
+	<%- include("../partials/footer") %>
