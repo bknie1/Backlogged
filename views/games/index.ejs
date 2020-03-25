@@ -1,6 +1,6 @@
 <%- include("../partials/header") %>
 
-	<div class="container">
+	<div class="container my-5">
 		<header class="jumbotron">
 			<h1 class="display-4">Games</h1>
 			<p class="lead">
@@ -14,10 +14,13 @@
 			<div class="col-sm-6 col-md-4">
 				<div class="thumbnail text-center m-3">
 					<img src="<%= g.image %>" class="game-art img-fluid" alt="Game Art">
-					<div class="caption">
+					<div class="caption my-1">
 						<h5>
-							<%= g.title %> (<%= g.system %>)
+							<%= g.title %>
 						</h5>
+						<h6>
+							<%= g.system %>
+						</h6>
 					</div>
 					<a class="btn btn-secondary" href="/games/<%= g._id %>">
 						Details
