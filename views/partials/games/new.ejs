@@ -5,20 +5,45 @@
 				<h3>
 					Add Game
 				</h3>
-				<input class="form-control my-3" type="text" name="titleInput" placeholder="Title" required>
-				<input class="form-control my-3" type="text" name="systemInput" placeholder="System" required>
-				<input class="form-control my-3" type="text" name="imageUrlInput" placeholder="Cover Art URL">
+
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">Title</span>
+					</div>
+					<input type="text" class="form-control" name="title" required aria-label="Title" aria-describedby="basic-addon1">
+				</div>
+
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">System</span>
+					</div>
+					<input type="text" class="form-control" name="system" required aria-label="System" aria-describedby="basic-addon1">
+				</div>
+				
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">Year</span>
+					</div>
+					<input type="text" class="form-control" name="year" placeholder="YYYY" required aria-label="Year" aria-describedby="basic-addon1">
+				</div>
+
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text">Description</span>
+					</div>
+					<textarea class="form-control" name="description" aria-label="Description" required></textarea>
+				</div>
+
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">Cover Art URL</span>
+					</div>
+					<input type="text" class="form-control" name="image" placeholder="(Optional)" required aria-label="Cover Art URL" aria-describedby="basic-addon1">
+				</div>
+				
 				<button class="btn btn-primary btn-md">
 					Add Game
 				</button>
-			</div>
-			<div class="col col-sm-12 col-md-6 my-3">
-				<h3>
-					Note
-				</h3>
-				<p>
-					Cover art is optional and can be added later.
-				</p>
 			</div>
 		</div>
 	</form>
