@@ -1,0 +1,69 @@
+<div class="container my-3">
+	<form method="POST" action="/games/<%= ViewModel._id %>/update?_method=PUT">
+		<!-- Method-Override: Dependency for PUT Request -->
+		<div class="row add-game">
+			<div class="col col-sm-12 col-md-6 my-3">
+				<h3>
+					Edit <%= ViewModel.title %>
+				</h3>
+
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">Title</span>
+					</div>
+					<input id="titleInput" type="text" class="form-control" name="game[title]" required aria-label="Title" aria-describedby="basic-addon1">
+				</div>
+
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">System</span>
+					</div>
+					<input id="systemInput" type="text" class="form-control" name="game[system]" required aria-label="System" aria-describedby="basic-addon1">
+				</div>
+				
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">Year</span>
+					</div>
+					<input id="yearInput" type="text" class="form-control" name="game[year]" placeholder="YYYY" required aria-label="Year" aria-describedby="basic-addon1">
+				</div>
+
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text">Description</span>
+					</div>
+					<textarea id="descriptionInput" class="form-control" name="game[description]" aria-label="Description" required></textarea>
+				</div>
+
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">Cover Art URL</span>
+					</div>
+					<input id="imageInput" type="text" class="form-control" name="game[image]" placeholder="(Optional)" required aria-label="Cover Art URL" aria-describedby="basic-addon1">
+				</div>
+				
+				<button class="btn btn-primary btn-md">
+					Update Game
+				</button>
+			</div>
+		</div>
+	</form>
+	<form method="POST" action="/games/<%= ViewModel._id %>/delete?_method=DELETE">
+		<button class="btn btn-danger btn-md">
+			Delete Game
+		</button>
+	</form>
+</div>
+
+<script type="text/javascript" src="/js/common.js"></script>
+
+<script type="text/javascript">
+	/// Using the value attributes was cumbersome; especially regarding description.
+	window.onload = () => {
+		CommonScript.populateInput("#titleInput", <%- JSON.stringify(ViewModel.title) %>);
+		CommonScript.populateInput("#systemInput", <%- JSON.stringify(ViewModel.system) %>);
+		CommonScript.populateInput("#yearInput", <%- JSON.stringify(ViewModel.year) %>);
+		CommonScript.populateInput("#descriptionInput", <%- JSON.stringify(ViewModel.description) %>);
+		CommonScript.populateInput("#imageInput", <%- JSON.stringify(ViewModel.image) %>);
+	};
+</script>

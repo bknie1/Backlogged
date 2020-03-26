@@ -4,7 +4,7 @@
 		<div class="row">
 			<div class="col-sm-12 col-md-8 order-sm-last order-md-first">
 				<h3>
-					<%= ViewModel.title %>
+					<%= ViewModel.title %> (<%= ViewModel.year %>)
 				</h3>
 				<h5>
 					<%= ViewModel.system %>
@@ -14,9 +14,13 @@
 						<%= t.name + " " %>
 							<% }) %>
 				</h6>
-				<p>
+				<h7>
+					Submitted by <%= ViewModel.author.username %>
+				</h7>
+				<p class="my-3">
 					<%= ViewModel.description %>
 				</p>
+				<a href="/games/<%= ViewModel._id %>/edit" class="btn btn-primary">Edit Game</a>
 			</div>
 			<div class="col-sm-12 col-md-4 order-sm-first order-md-last text-md-right">
 				<img src="<%= ViewModel.image %>" class="game-art img-fluid" alt="Game Art">
@@ -30,12 +34,10 @@
 			<% ViewModel.comments.reverse().forEach((c) => { %>
 				<div class="card my-3">
 					<div class="card-header">
-						<%= c.author.username %>
+						<span class="font-weight-bold"><%= c.author.username %></span> says
 					</div>
-					<div class="card-body">
-						<small>
-							<%= c.text %>
-						</small>
+					<div class="card-body font-italic">
+							"<%= c.text %>"
 					</div>
 				</div>
 			<% }); %>

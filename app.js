@@ -1,29 +1,34 @@
 // ==============================================================
 // IMPORTS, SETUP, & GLOBALS
 // ==============================================================
-const express = require("express");
-const bp = require("body-parser");
-const mongoose = require("mongoose");
-const passport = require("passport");
-const localStrategy = require("passport-local");
-const plm = require("passport-local-mongoose");
-const seed = require("./seeds/seed");
+const express 			= require("express");
+const bp 				= require("body-parser");
+const mongoose 			= require("mongoose");
+const passport 			= require("passport");
+const localStrategy 	= require("passport-local");
+const methodOverride 	= require("method-override"); // Required for PUT
+const plm 				= require("passport-local-mongoose");
+const seed 				= require("./seeds/seed");
 // seed(); // DEMO PURPOSES ONLY
 // Models -------------------------------------------------------
-const Game = require("./models/game");
-const Comment = require("./models/comment");
-const Tag = require("./models/tag");
-const User = require("./models/user");
+const Game 				= require("./models/game");
+const Comment 			= require("./models/comment");
+const Tag 				= require("./models/tag");
+const User 				= require("./models/user");
 // Express -----------------------------------------------------
 const app = express();
-app.use(express.static("css"));
-app.set("view engine", "ejs");
+
+app.use(express.static("public")); // js, css, etc.
+
+app.set("view engine", "ejs"); // EJS is a dependency
 // Express Options: Session
 app.use(require("express-session")({
     secret: "Purple Kisses",
     resave: false,
     saveUninitialized: false
 }));
+
+app.use(methodOverride("_method")); // For PUT requests
 // Passport ----------------------------------------------------
 app.use(passport.initialize());
 app.use(passport.session());
