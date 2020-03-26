@@ -21,10 +21,11 @@ EJS (Embedded JavaScript)
 ### Back
 - Node.js and NPM
 - Express.js
-- Express Session
+- Express Session (Session Interface)
+- Method Override (Allows PUT requests)
 - Body Parser
-- Mongoose
-- Passport, Passport Local, Passport Local Mongoose
+- Mongoose (Interface for MongoDB)
+- Passport, Passport Local, Passport Local Mongoose (Authentication)
 
 MongoDB / NoSQL
 
