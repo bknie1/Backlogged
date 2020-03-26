@@ -111,7 +111,7 @@ function seedDB() {
 		},
 	];
 	
-	// Instantiate
+	// Delete & Instantiate
 	Game.deleteMany({}, (err) => {
 		if(err) {
 			console.log(`Error: ${err}`);

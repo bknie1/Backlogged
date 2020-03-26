@@ -5,6 +5,8 @@ const Comment = require("../models/comment");
 
 const imageUrlPlaceholder = "https://via.placeholder.com/150/000000/FFFFFF/?text=No%20Image";
 
+
+// /games/
 router.get("/", (req, res) => {
 		Game.find({}, null, {sort: {name: 1}}, (err, games) => {
 			if(err) {
@@ -17,6 +19,8 @@ router.get("/", (req, res) => {
 	);
 });
 
+
+// /games/new/
 router.get("/new", isLoggedIn, (req, res) => {
 	res.render("games/new");
 });
@@ -31,6 +35,7 @@ router.post("/", isLoggedIn, (req, res) => {
 	res.redirect("/games");
 });
 
+// /games/:_id
 router.get("/:_id", (req, res) => {
 	Game.findById(req.params._id).populate(["comments", "tags"]).exec((err, game) => {
 		if(err) {

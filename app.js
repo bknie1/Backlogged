@@ -8,7 +8,7 @@ const passport = require("passport");
 const localStrategy = require("passport-local");
 const plm = require("passport-local-mongoose");
 const seed = require("./seeds/seed");
-seed();
+// seed(); // DEMO PURPOSES ONLY
 // Models -------------------------------------------------------
 const Game = require("./models/game");
 const Comment = require("./models/comment");

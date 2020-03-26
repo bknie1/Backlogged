@@ -1,18 +1,9 @@
-<div class="display-block w-100">
+<div class="container">
 	<form method="POST" action="/games/<%= ViewModel._id %>/comments" class="">
-
-		<div class="input-group mb-3">
-			<div class="input-group-prepend">
-				<span class="input-group-text" id="basic-addon1">Username</span>
-			</div>
-			<input class="form-control" type="text" name="authorInput" aria-label="username" placeholder="" required>
-		</div>
-
 		<div class="input-group mb-3">
 			<div class="input-group-prepend">
 				<span class="input-group-text" id="basic-addon1">Comment</span>
-			</div>
-			<textarea class="form-control" type="text" name="textInput" required>
+			</div><textarea class="form-control" type="text" name="comment" required>
 			</textarea>
 		</div>
 
