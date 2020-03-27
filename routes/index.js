@@ -41,8 +41,9 @@ router.post("/login", passport.authenticate("local", {
 	// Handled by middleware.
 });
 
-router.post("/logout", logout, (req, res) => {
-	res.redirect("/");
+router.get("/logout", (req, res) => {
+	req.logout(); // Destroys all user data in the session.
+    res.redirect("/");
 });
 
 function isLoggedIn(req, res, next) {
@@ -50,10 +51,6 @@ function isLoggedIn(req, res, next) {
 		return next();
 	}
 	res.redirect("/login");
-}
-
-function logout() {
-	app.logout();
 }
 
 module.exports = router;

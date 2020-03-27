@@ -3,13 +3,14 @@
 		<div class="input-group mb-3">
 			<div class="input-group-prepend">
 				<span class="input-group-text" id="basic-addon1">Comment</span>
-			</div><input class="form-control" type="text" name="comment" required>
+			</div>
+			<input class="form-control" type="text" name="comment" required autofocus>
 		</div>
 
-		<button class="btn btn-primary">
+		<button class="btn btn-success">
 			Save Comment
 		</button>
 
-		<!-- <a href="/games/<%= ViewModel._id %>" class="btn btn-secondary btn-block">Go Back</a> -->
+		<a href="/games/<%= ViewModel._id %>" class="btn btn-secondary btn-md">Go Back</a>
 	</form>
 </div>

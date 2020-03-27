@@ -20,7 +20,6 @@ router.get("/", (req, res) => {
 	);
 });
 
-
 // /games/new/
 router.get("/new", isLoggedIn, (req, res) => {
 	res.render("games/new");
@@ -83,45 +82,56 @@ router.get("/:_id", (req, res) => {
 			throw err;
 			res.redirect("/games");
 		} else {
-			res.render("games/show", {ViewModel: game});
+			let isGameAuthor = false;
+			let authorId = undefined;
+			
+			res.render("games/show", {
+				ViewModel: game
+			});
 		}
 	});
 });
 
 // /games/:_id/edit
-router.get("/:_id/edit", isLoggedIn, (req, res) => {
-	Game.findById(req.params._id).exec((err, game) => {
+router.get("/:_id/edit", checkGameOwnership, (req, res) => {
+	Game.findById(req.params._id, (err, game) => {
 		if(err) {
-			console.log(`Error: ${err}`);
-			throw err;
-			res.redirect("/" + req.params._id);
-		} else {
-			res.render("games/edit", {ViewModel: game});
+			console.log(err);
+			return res.redirect("back");
 		}
+		res.render("games/edit", {ViewModel: game});
 	});
 });
 
 // /games/:_id/update
-router.put("/:_id/update", (req, res) => {
+router.put("/:_id/update", checkGameOwnership, (req, res) => {
 	// Because our input names are in game[dataPoint] format,
-	// we can just pass body's campground variable.
+	// we can just pass body's game variable.
 	Game.findByIdAndUpdate(req.params._id, req.body.game, (err, game) => {
 		if(err) {
 			console.log(err);
-			return res.redirect("/games/" + req.params._id);
+			return res.redirect("back");
 		}
 		res.redirect("/games/" + req.params._id);
 	});
 });
 
 // /games/:_id/delete
-router.delete("/:_id/delete", isLoggedIn, (req, res) => {
+router.delete("/:_id/delete", checkGameOwnership, (req, res) => {
 	Game.findByIdAndRemove(req.params._id, (err, game) => {
 		if(err) {
 			console.log(err);
-			return res.redirect("/games");
+			return res.redirect("back");
 		}
-		res.redirect("/games");
+		
+		// Also, delete all comments associated with this game.
+		Comment.deleteMany( {_id: { $in: game.comments } }, (err) => {
+			if(err) {
+				console.log(err);
+				return res.redirect("back");
+			}
+			res.redirect("/games");
+		});
 	});
 });
 
@@ -131,6 +141,26 @@ function isLoggedIn(req, res, next) {
 		return next();
 	}
 	res.redirect("/login");
+}
+
+function checkGameOwnership(req, res, next) {
+	if(req.isAuthenticated()) {
+		Game.findById(req.params._id, (err, game) => {
+			if(err) {
+				console.log(`Error: ${err}`);
+				res.redirect("/games/" + req.params._id);
+			} else {
+				// Does user own game? Note: Author ID is an Object.
+				if(game.author.id.equals(req.user._id)) {
+					next();
+				} else {
+					res.redirect("back");
+				}
+			}
+		});
+	} else {
+		res.redirect("back");
+	}
 }
 // Export ------------------------------------------------------------
 

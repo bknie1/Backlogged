@@ -42,16 +42,11 @@
 					<input id="imageInput" type="text" class="form-control" name="game[image]" placeholder="(Optional)" required aria-label="Cover Art URL" aria-describedby="basic-addon1">
 				</div>
 				
-				<button class="btn btn-primary btn-md">
+				<button class="btn btn-success btn-md">
 					Update Game
 				</button>
 			</div>
 		</div>
-	</form>
-	<form method="POST" action="/games/<%= ViewModel._id %>/delete?_method=DELETE">
-		<button class="btn btn-danger btn-md">
-			Delete Game
-		</button>
 	</form>
 </div>
 

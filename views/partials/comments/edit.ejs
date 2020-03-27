@@ -1,0 +1,37 @@
+<div class="container my-3">
+	<form method="POST" action="/games/<%= GameId %>/comments/<%= CommentId %>/update?_method=PUT">
+		<!-- Method-Override: Dependency for PUT Request -->
+		<div class="row add-game">
+			<div class="col col-sm-12 col-md-6 my-3">
+				<h3>
+					Edit Comment
+				</h3>
+
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">Comment</span>
+					</div>
+					<input id="commentInput" type="text" class="form-control" name="comment[text]" required aria-label="Title" aria-describedby="basic-addon1">
+				</div>
+			</div>
+		</div>
+		<button class="btn btn-success btn-md mb-3">
+			Update Comment
+		</button>
+	</form>
+	<form method="POST" action="/games/<%= GameId %>/comments/<%= CommentId %>/delete?_method=DELETE">
+		<button class="btn btn-danger btn-md">
+			Delete Comment
+		</button>
+	</form>
+
+</div>
+
+<script type="text/javascript" src="/js/common.js"></script>
+
+<script type="text/javascript">
+	/// Using the value attributes was cumbersome; especially regarding description.
+	window.onload = () => {
+		CommonScript.populateInput("#commentInput", <%- JSON.stringify(ViewModel.text) %>);
+	};
+</script>
