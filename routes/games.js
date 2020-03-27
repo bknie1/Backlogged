@@ -2,10 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Game = require("../models/game");
 const Comment = require("../models/comment");
-const locus = require("locus");
+var middleware = require("../middleware"); // Auto gets index.js
 
 const imageUrlPlaceholder = "https://via.placeholder.com/150/000000/FFFFFF/?text=No%20Image";
-
 
 // /games/
 router.get("/", (req, res) => {
@@ -21,12 +20,12 @@ router.get("/", (req, res) => {
 });
 
 // /games/new/
-router.get("/new", isLoggedIn, (req, res) => {
+router.get("/new", middleware.isLoggedIn, (req, res) => {
 	res.render("games/new");
 });
 
 // /games/
-router.post("/", isLoggedIn, (req, res) => {
+router.post("/", middleware.isLoggedIn, (req, res) => {
 	let title = req.body.title;
 	let system = req.body.system;
 	let year = req.body.year;
@@ -93,7 +92,7 @@ router.get("/:_id", (req, res) => {
 });
 
 // /games/:_id/edit
-router.get("/:_id/edit", checkGameOwnership, (req, res) => {
+router.get("/:_id/edit", middleware.checkGameOwnership, (req, res) => {
 	Game.findById(req.params._id, (err, game) => {
 		if(err) {
 			console.log(err);
@@ -104,7 +103,7 @@ router.get("/:_id/edit", checkGameOwnership, (req, res) => {
 });
 
 // /games/:_id/update
-router.put("/:_id/update", checkGameOwnership, (req, res) => {
+router.put("/:_id/update", middleware.checkGameOwnership, (req, res) => {
 	// Because our input names are in game[dataPoint] format,
 	// we can just pass body's game variable.
 	Game.findByIdAndUpdate(req.params._id, req.body.game, (err, game) => {
@@ -117,7 +116,7 @@ router.put("/:_id/update", checkGameOwnership, (req, res) => {
 });
 
 // /games/:_id/delete
-router.delete("/:_id/delete", checkGameOwnership, (req, res) => {
+router.delete("/:_id/delete", middleware.checkGameOwnership, (req, res) => {
 	Game.findByIdAndRemove(req.params._id, (err, game) => {
 		if(err) {
 			console.log(err);
@@ -135,33 +134,6 @@ router.delete("/:_id/delete", checkGameOwnership, (req, res) => {
 	});
 });
 
-// Helper Functions ----------------------------------------
-function isLoggedIn(req, res, next) {
-	if(req.isAuthenticated()) {
-		return next();
-	}
-	res.redirect("/login");
-}
-
-function checkGameOwnership(req, res, next) {
-	if(req.isAuthenticated()) {
-		Game.findById(req.params._id, (err, game) => {
-			if(err) {
-				console.log(`Error: ${err}`);
-				res.redirect("/games/" + req.params._id);
-			} else {
-				// Does user own game? Note: Author ID is an Object.
-				if(game.author.id.equals(req.user._id)) {
-					next();
-				} else {
-					res.redirect("back");
-				}
-			}
-		});
-	} else {
-		res.redirect("back");
-	}
-}
 // Export ------------------------------------------------------------
 
 module.exports = router;

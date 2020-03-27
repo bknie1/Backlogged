@@ -3,9 +3,10 @@ const router = express.Router({mergeParams: true});
 // Note: We allow merging of game and comment params.
 const Game = require("../models/game");
 const Comment = require("../models/comment");
+var middleware = require("../middleware"); // Auto gets index.js
 
 // /games/:_id/comments/new/
-router.get("/new",isLoggedIn, (req, res) => {
+router.get("/new", middleware.isLoggedIn, (req, res) => {
 	Game.findById(req.params._id, (err, game) => {
 		if(err) { console.log(`Error: ${err}`)}
 		else {
@@ -15,7 +16,7 @@ router.get("/new",isLoggedIn, (req, res) => {
 });
 
 // /games/:_id/comments/
-router.post("/", isLoggedIn, (req, res) => {
+router.post("/", middleware.isLoggedIn, (req, res) => {
 	/// Get game and create a comment on it.
 	Game.findById(req.params._id, (err, game) => {
 		if(err) { console.log(`Error: ${err}`)}
@@ -45,7 +46,7 @@ router.post("/", isLoggedIn, (req, res) => {
 });
 
 // /games/:_id/comments/:_cid/edit
-router.get("/:_cid/edit", checkCommentOwnership, (req, res) => {
+router.get("/:_cid/edit", middleware.checkCommentOwnership, (req, res) => {
 /// If the user owns this comment, the user is allowed to edit it.
 	Comment.findById(req.params._cid, (err, comment) => {
 		if(err) {
@@ -61,7 +62,7 @@ router.get("/:_cid/edit", checkCommentOwnership, (req, res) => {
 });
 
 // /games/:_id/comments/:_cid/update
-router.put("/:_cid/update", checkCommentOwnership, (req, res) => {
+router.put("/:_cid/update", middleware.checkCommentOwnership, (req, res) => {
 	/// If the user owns this comment, save the requested updates.
 	Comment.findByIdAndUpdate(req.params._cid, req.body.comment, (err, comment) => {
 		if(err) {
@@ -74,7 +75,7 @@ router.put("/:_cid/update", checkCommentOwnership, (req, res) => {
 });
 
 // /games/:_id/delete
-router.delete("/:_cid/delete", checkCommentOwnership, (req, res) => {
+router.delete("/:_cid/delete", middleware.checkCommentOwnership, (req, res) => {
 /// If the user owns this comment, delete, and delete the comment from the Game's comment list.
 		Comment.findByIdAndRemove(req.params._cid, (err, comment) => {
 			if(err) {
@@ -97,31 +98,6 @@ router.delete("/:_cid/delete", checkCommentOwnership, (req, res) => {
 	});
 });
 
-function isLoggedIn(req, res, next) {
-	if(req.isAuthenticated()) {
-		return next();
-	}
-	res.redirect("/login");
-}
 
-function checkCommentOwnership(req, res, next) {
-	if(req.isAuthenticated()) {
-		Comment.findById(req.params._cid, (err, comment) => {
-			if(err) {
-				console.log(`Error: ${err}`);
-				res.redirect("/games/" + req.params._id);
-			} else {
-				// Does user own comment? Note: Author ID is an Object.
-				if(comment.author.id.equals(req.user._id)) {
-					next();
-				} else {
-					res.redirect("back");
-				}
-			}
-		});
-	} else {
-		res.redirect("back");
-	}
-}
 
 module.exports = router;
