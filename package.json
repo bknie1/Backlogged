@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "mongod --nojournal && node app.js"
   },
   "author": "Brandon Knieriem",
   "license": "ISC",
@@ -23,6 +23,7 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^6.0.1",
+    "request": "^2.88.2",
     "request-promise": "^4.2.5"
   }
 }
