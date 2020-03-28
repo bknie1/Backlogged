@@ -1,5 +1,5 @@
-# Gamezy
-Find new games to play, rating system, comments.
+# Backlogged
+Find new games to play. Add games, comment on games, tag games, and follow games.
 
 ## Why?
 
