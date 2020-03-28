@@ -1,7 +1,7 @@
 <%- include("../partials/header") %>
 
 	<div class="container my-5">
-		<header class="jumbotron">
+		<header class="jumbotron jumbotron-dark">
 			<h1 class="display-4">Games</h1>
 			<p class="lead">
 				Browse games in our database.
@@ -12,21 +12,15 @@
 		<div class="row">
 			<% ViewModel.forEach((g) => { %>
 			<div class="col-sm-6 col-md-4">
-				<div class="thumbnail text-center m-3">
-					<a href="/games/<%= g._id %>">
-						<img src="<%= g.image %>" class="game-art img-fluid" alt="Game Art">
-					</a>
-					<div class="caption my-1">
-						<h5>
-							<%= g.title %>
-						</h5>
-						<h6>
-							<%= g.system %>
-						</h6>
-					</div>
+				<div class="card border-secondary mb-3" style="max-width: 20rem;">
+				<div class="card-header"><%= g.title %> (<%= g.system %>)</div>
+				<div class="card-body">
+					<img src="<%= g.image %>" class="game-art img-fluid img-thumbnail mb-3" alt="Game Art">
+					<a class="btn btn-primary" href="/games/<%= g._id %>">Details</a>
 				</div>
+			  </div>
 			</div>
-				<% }); %>
+			<% }); %>
 		</div>
 	</div>
 

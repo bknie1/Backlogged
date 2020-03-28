@@ -1,10 +1,15 @@
 <%- include("../partials/header") %>
+	<script type="text/javascript" src="/js/common.js"></script>
 
 	<div class="container my-5">
 		<div class="row">
-			<div class="col-sm-12 col-md-8 order-sm-last order-md-first">
+			<div class="my-3 col-12 col-md-6 order-md-last">
+				<img src="<%= ViewModel.image %>" class="game-art img-fluid img-thumbnail" alt="Game Art">
+			</div>
+			<div class="my-3 col-12 col-md-6 order-md-first">
 				<h3>
-					<%= ViewModel.title %> (<%= ViewModel.year %>)
+					<%= ViewModel.title %> (
+						<%= ViewModel.year %>)
 				</h3>
 				<h5>
 					<%= ViewModel.system %>
@@ -15,34 +20,59 @@
 							<% }) %>
 				</h6>
 				<h7>
-					Submitted by <%= ViewModel.author.username %>
+					Submitted by
+					<%= ViewModel.author.username %>
 				</h7>
 				<p class="my-3">
 					<%= ViewModel.description %>
 				</p>
-				<a href="/games/<%= ViewModel._id %>/edit" class="btn btn-primary">Edit Game</a>
+				<% if(currentUser && ViewModel.author.id.equals(currentUser._id)) { %>
+					<div class="d-inline-flex mb-3">
+						<a href="/games/<%= ViewModel._id %>/edit" class="btn btn-primary btn-sm mr-3">Edit Game</a>
+						<form method="POST" action="/games/<%= ViewModel._id %>/delete?_method=DELETE">
+							<button class="btn btn-danger btn-sm">
+								Delete Game
+							</button>
+						</form>
+					</div>
+					<% } %>
 			</div>
-			<div class="col-sm-12 col-md-4 order-sm-first order-md-last text-md-right">
-				<img src="<%= ViewModel.image %>" class="game-art img-fluid" alt="Game Art">
-			</div>
+
 		</div>
 
 		<div class="my-5">
 			<div class="text-right">
-				<a href="/games/<%= ViewModel._id %>/comments/new" class="btn btn-primary btn-md">Add a Comment</a>
+				<a href="/games/<%= ViewModel._id %>/comments/new" class="btn btn-primary btn-md">Add Comment</a>
 			</div>
 			<% ViewModel.comments.reverse().forEach((c) => { %>
 				<div class="card my-3">
-					<div class="card-header">
-						<span class="font-weight-bold"><%= c.author.username %></span> says
+					<div class="card-header d-flex flex-space-between">
+						<div>
+							<span class="font-weight-bold">
+								<%= c.author.username %>
+							</span> says
+						</div>
+						<% if(currentUser && c.author.id.equals(currentUser._id)) { %>
+							<div class="ml-auto">
+
+								<form method="POST" action="/games/<%= ViewModel._id %>/comments/<%= c._id %>/delete?_method=DELETE">
+																	<a href="/games/<%= ViewModel._id %>/comments/<%= c._id %>/edit" class="btn btn-secondary btn-sm">
+									<i class="fa fa-pencil" aria-hidden="true"></i>
+								</a>
+									<button class="btn btn-danger btn-sm">
+										<i class="fa fa-trash" aria-hidden="true"></i>
+									</button>
+								</form>
+							</div>
+							<% } %>
 					</div>
 					<div class="card-body font-italic">
-							"<%= c.text %>"
+						"
+						<%= c.text %>"
 					</div>
 				</div>
-			<% }); %>
+				<% }); %>
 		</div>
-
 	</div>
 
 	<%- include("../partials/footer") %>
