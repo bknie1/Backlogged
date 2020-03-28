@@ -3,6 +3,7 @@
 // ==============================================================
 const express 			= require("express");
 const bp 				= require("body-parser");
+const flash				= require("connect-flash");
 const mongoose 			= require("mongoose");
 const passport 			= require("passport");
 const localStrategy 	= require("passport-local");
@@ -15,7 +16,7 @@ const Game 				= require("./models/game");
 const Comment 			= require("./models/comment");
 const Tag 				= require("./models/tag");
 const User 				= require("./models/user");
-// Express -----------------------------------------------------
+// Express and Modules ------------------------------------------
 const app = express();
 
 app.use(express.static("public")); // js, css, etc.
@@ -28,6 +29,8 @@ app.use(require("express-session")({
     saveUninitialized: false
 }));
 
+app.use(bp.urlencoded({extended: true}));
+app.use(flash()); // Requires express-sesssion
 app.use(methodOverride("_method")); // For PUT requests
 // Passport ----------------------------------------------------
 app.use(passport.initialize());
@@ -36,14 +39,6 @@ app.use(passport.session());
 passport.use(new localStrategy(User.authenticate())); // Auth included in PLM
 passport.serializeUser(User.serializeUser()); // ser included in PLM
 passport.deserializeUser(User.deserializeUser()); // deser included in PLM
-
-app.use((req, res, next) => {
-	res.locals.currentUser = req.user; // Includes the User in all routes.
-	next(); // Required to move forward from this middleware.
-});
-
-// Body Parser -------------------------------------------------
-app.use(bp.urlencoded({extended: true}));
 // Mongoose ----------------------------------------------------
 mongoose.connect('mongodb://localhost/Backlogged', {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -53,6 +48,13 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("Connected to database.");
+});
+// Locals -------------------------------------------------------
+app.use((req, res, next) => {
+	res.locals.currentUser = req.user; // Includes the User in all routes.
+	res.locals.error = req.flash("error");
+	res.locals.success = req.flash("success");
+	next(); // Required to move forward from this middleware.
 });
 // Globals ------------------------------------------------------
 const port = 3000;

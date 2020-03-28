@@ -57,17 +57,11 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
 				console.log(err);
 				return res.redirect("/");
 			}
-			// console.log(`Added ${g}`); // DEBUG
+			
+			req.flash("success", "Game added!");
 		});
-	} else { // UPDATE
-		// Update all but the author of the original game.
-		Game.updateOne(filter, {
-			name: title,
-			description: description,
-			year: year,
-			system: system,
-			image: imageUrl
-		});
+	} else {
+		req.flash("error", "Game already exists");
 	}
 	
 	res.redirect("/games");
@@ -96,6 +90,7 @@ router.get("/:_id/edit", middleware.checkGameOwnership, (req, res) => {
 	Game.findById(req.params._id, (err, game) => {
 		if(err) {
 			console.log(err);
+			req.flash("error", "Game not found");
 			return res.redirect("back");
 		}
 		res.render("games/edit", {ViewModel: game});
@@ -109,8 +104,10 @@ router.put("/:_id/update", middleware.checkGameOwnership, (req, res) => {
 	Game.findByIdAndUpdate(req.params._id, req.body.game, (err, game) => {
 		if(err) {
 			console.log(err);
+			req.flash("error", "Could not update game");
 			return res.redirect("back");
 		}
+		req.flash("success", "Game updated!");
 		res.redirect("/games/" + req.params._id);
 	});
 });
@@ -120,6 +117,7 @@ router.delete("/:_id/delete", middleware.checkGameOwnership, (req, res) => {
 	Game.findByIdAndRemove(req.params._id, (err, game) => {
 		if(err) {
 			console.log(err);
+			req.flash("error", "Could not delete game");
 			return res.redirect("back");
 		}
 		
@@ -127,6 +125,7 @@ router.delete("/:_id/delete", middleware.checkGameOwnership, (req, res) => {
 		Comment.deleteMany( {_id: { $in: game.comments } }, (err) => {
 			if(err) {
 				console.log(err);
+				req.flash("error", "Could not delete game comments");
 				return res.redirect("back");
 			}
 			res.redirect("/games");

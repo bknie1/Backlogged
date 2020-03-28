@@ -1,3 +1,16 @@
+.bg {
+  /* The image used */
+  background-image: url("../img/florian-gagnepain-unsplash.jpg");
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 img.game-art {
 	min-height: 5rem;
 }

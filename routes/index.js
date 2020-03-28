@@ -16,13 +16,13 @@ router.post("/register", (req, res) => {
 	User.register(newUser, req.body.password, (err, user) => {
 		if(err) {
 			if(err.name == "UserExistsError") {
-				console.log("User already exists.");
-				return res.render("users/new");
+				return res.render("users/new", {"error": "Username taken"});
 			} else {
 				console.log(err);
+				return res.render("users/new", {"error": err});
 			}
 		}
-		
+		req.flash("success", "You have successfully registered");
 		passport.authenticate("local")(req, res, () => {
 			res.redirect("/games");
 		});
@@ -43,6 +43,7 @@ router.post("/login", passport.authenticate("local", {
 
 router.get("/logout", (req, res) => {
 	req.logout(); // Destroys all user data in the session.
+	req.flash("success", "You have been signed out");
     res.redirect("/");
 });
 

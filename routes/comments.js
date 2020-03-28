@@ -29,12 +29,16 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
 				}
 			}, (err, comment) => {
 				comment.save((err, comment) => {
-					if(err) { console.log(`Error: ${err}`) }
+					if(err) {
+						req.flash("error", "Could not save comment");
+						console.log(`Error: ${err}`)
+					}
 					else {
 						game.comments.push(comment);
 						game.save((err, game) => {
 							if(err) { console.log(`Error: ${err}`) }
 							else {
+								req.flash("success", "Comment added!");
 								res.redirect(`/games/${game._id}`)
 							}
 						});
@@ -51,6 +55,7 @@ router.get("/:_cid/edit", middleware.checkCommentOwnership, (req, res) => {
 	Comment.findById(req.params._cid, (err, comment) => {
 		if(err) {
 			console.log(err);
+			req.flash("error", "Could not find comment");
 			return res.redirect("back");
 		}
 		res.render("comments/edit", {
@@ -67,6 +72,7 @@ router.put("/:_cid/update", middleware.checkCommentOwnership, (req, res) => {
 	Comment.findByIdAndUpdate(req.params._cid, req.body.comment, (err, comment) => {
 		if(err) {
 			console.log(err);
+			req.flash("error", "Could not update comment");
 			return res.redirect("/games/" + req.params._id);
 		}
 		console.log(req.params._id);
@@ -80,6 +86,7 @@ router.delete("/:_cid/delete", middleware.checkCommentOwnership, (req, res) => {
 		Comment.findByIdAndRemove(req.params._cid, (err, comment) => {
 			if(err) {
 				console.log(err);
+				req.flash("error", "Could not delete comment");
 				return res.redirect("/games");
 			}
 
@@ -91,6 +98,7 @@ router.delete("/:_cid/delete", middleware.checkCommentOwnership, (req, res) => {
 		}, (err, game) => {
 			if(err) {
 				console.log(err);
+				req.flash("error", "Could not delete comment from Game");
 				return res.redirect("/games/" + req.params._id);
 			}
 			res.redirect("/games/" + req.params._id);			   
